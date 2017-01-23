@@ -1,4 +1,7 @@
-import mock
+try:
+    from unittest import mock
+except ImportError:  # Python 3.2 and below
+    import mock
 
 from django.test import TestCase
 
