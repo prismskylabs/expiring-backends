@@ -15,7 +15,7 @@ __all__ = (
 class S3BotoTestCase(TestCase):
     @mock.patch('storages.backends.s3boto.S3Connection')
     def setUp(self, S3Connection):
-        self.storage = s3botoexpiring.S3BotoStorage()
+        self.storage = s3botoexpiring.S3BotoExpiringStorage()
         self.storage._connection = mock.MagicMock()
 
 
@@ -26,18 +26,18 @@ class S3BotoExpiringTestCase(S3BotoTestCase):
         """
         name = 'test_storage_expiration.txt'
         url = 'http://aws.amazon.com/%s' % name
-        self.storage1.connection.generate_url.return_value = url
-        self.assertEquals(self.storage1.url(name), url)
+        self.storage.connection.generate_url.return_value = url
+        self.assertEquals(self.storage.url(name), url)
         offset = datetime.timedelta(seconds=172800)
         midnight_tomorrow = datetime.datetime.utcnow().replace(hour=0, minute=0, second=0) + offset
         midnight_tomorrow_epoch = int(round(time.mktime(midnight_tomorrow.timetuple())))
-        self.storage1.connection.generate_url.assert_called_with(
+        self.storage.connection.generate_url.assert_called_with(
             midnight_tomorrow_epoch,
             method='GET',
-            bucket=self.storage1.bucket.name,
+            bucket=self.storage.bucket.name,
             key=name,
-            query_auth=self.storage1.querystring_auth,
-            force_http=not self.storage1.secure_urls,
+            query_auth=self.storage.querystring_auth,
+            force_http=not self.storage.secure_urls,
             headers=None,
             response_headers=None,
             expires_in_absolute=True
