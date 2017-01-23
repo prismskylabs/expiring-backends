@@ -8,3 +8,11 @@ The code here is largely based on discussion in tickets on the django-storages p
  
 * it didn't need to be merged into django-storages, potentially breaking other parts
 * it wouldn't be stuck on an ancient fork of django-storages
+
+## Configuration
+
+In your Django settings module, set:
+ 
+        DEFAULT_FILE_STORAGE = 'expiring_backends.s3botoexpiring.S3BotoExpiringStorage'``
+
+Old versions that were patched into django-storages modified their behavior based on ``AWS_QUERYSTRING_ABSOLUTE_EXPIRE_MODE`` set to ``True`` in the Django settings module, but now it is assumed if you use this Storages backend then it is assumed you want absolute expiration.

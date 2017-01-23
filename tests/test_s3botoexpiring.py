@@ -1,6 +1,4 @@
 import mock
-import datetime
-import time
 
 from django.test import TestCase
 
@@ -20,19 +18,19 @@ class S3BotoTestCase(TestCase):
 
 
 class S3BotoExpiringTestCase(S3BotoTestCase):
-    def test_storage_url(self):
+    def test_storage_url_with_absolute_expiry(self):
         """
         Test saving a file with expires_in_absolute set
         """
         name = 'test_storage_expiration.txt'
         url = 'http://aws.amazon.com/%s' % name
+        expiration = s3botoexpiring.midnight_tomorrow()
+
         self.storage.connection.generate_url.return_value = url
         self.assertEquals(self.storage.url(name), url)
-        offset = datetime.timedelta(seconds=172800)
-        midnight_tomorrow = datetime.datetime.utcnow().replace(hour=0, minute=0, second=0) + offset
-        midnight_tomorrow_epoch = int(round(time.mktime(midnight_tomorrow.timetuple())))
+
         self.storage.connection.generate_url.assert_called_with(
-            midnight_tomorrow_epoch,
+            expiration,
             method='GET',
             bucket=self.storage.bucket.name,
             key=name,

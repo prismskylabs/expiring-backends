@@ -1,10 +1,6 @@
 from setuptools import setup
 
 
-def read(filename):
-    with open(filename) as f:
-        return f.read()
-
 setup(
     name='expiring-backends',
     version='0.0.1',

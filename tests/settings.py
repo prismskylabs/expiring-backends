@@ -1,4 +1,4 @@
-# copied from https://github.com/jschneier/django-storages/blob/master/tests/settings.py
+# adapted from https://github.com/jschneier/django-storages/blob/master/tests/settings.py
 import os
 
 MEDIA_ROOT = os.path.normcase(os.path.dirname(os.path.abspath(__file__)))
@@ -8,6 +8,7 @@ INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.sessions',
     'django.contrib.contenttypes',
+    'storages',
     'expiring_backends',
 )
 
