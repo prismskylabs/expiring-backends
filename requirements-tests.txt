@@ -1,0 +1,4 @@
+Django>=1.7
+pytest-cov>=2.2.1
+boto>=2.32.0
+mock
